@@ -1,0 +1,25 @@
+<odoo>
+    <record id="view_stock_inventory_report_wizard" model="ir.ui.view">
+        <field name="name">stock.inventory.report.wizard.form</field>
+        <field name="model">stock.inventory.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Consultar Inventario a Fecha">
+                <group>
+                    <field name="date"/>
+                </group>
+                <footer>
+                    <button string="Consultar" type="object" name="action_view_inventory_report" class="btn-primary"/>
+                    <button string="Exportar a Excel" type="object" name="action_export_inventory_report" class="btn-secondary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_inventory_report_wizard" model="ir.actions.act_window">
+        <field name="name">Consultar Inventario a Fecha</field>
+        <field name="res_model">stock.inventory.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

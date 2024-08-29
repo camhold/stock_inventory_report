@@ -1,0 +1,20 @@
+<odoo>
+    <record id="view_stock_inventory_report_tree" model="ir.ui.view">
+        <field name="name">stock.inventory.report.tree</field>
+        <field name="model">stock.inventory.report</field>
+        <field name="arch" type="xml">
+            <tree string="Reporte de Inventario a Fecha">
+                <field name="product_id"/>
+                <field name="location_id"/>
+                <field name="quantity"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_stock_inventory_report" model="ir.actions.act_window">
+        <field name="name">Reporte de Inventario a Fecha</field>
+        <field name="res_model">stock.inventory.report</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

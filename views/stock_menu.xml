@@ -1,0 +1,4 @@
+<odoo>
+    <menuitem id="menu_stock_inventory_report_root" name="Reporte de Inventario" parent="stock.menu_stock_root" sequence="10"/>
+    <menuitem id="menu_stock_inventory_report" name="Consultar Inventario a Fecha" parent="menu_stock_inventory_report_root" action="action_stock_inventory_report_wizard"/>
+</odoo>
