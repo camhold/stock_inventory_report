@@ -18,7 +18,7 @@ class StockInventoryReport(models.Model):
             key = (move.product_id.id, move.location_id.id)
             if key not in inventory_data:
                 inventory_data[key] = 0
-            inventory_data[key] += move.product_qty if move.location_dest_id.id == move.location_id.id else -move.product_qty
+            inventory_data[key] += move.quantity if move.location_dest_id.id == move.location_id.id else -move.quantity
         
         report_lines = []
         for (product_id, location_id), quantity in inventory_data.items():

@@ -26,9 +26,9 @@ class StockInventoryReportWizard(models.TransientModel):
             if key not in inventory_data:
                 inventory_data[key] = 0
             if move.location_dest_id.id == move.location_id.id:
-                inventory_data[key] += move.product_qty
+                inventory_data[key] += move.quantity
             else:
-                inventory_data[key] -= move.product_qty
+                inventory_data[key] -= move.quantity
 
         # Crear registros del reporte
         report_lines = []
@@ -66,9 +66,9 @@ class StockInventoryReportWizard(models.TransientModel):
             if key not in inventory_data:
                 inventory_data[key] = 0
             if move.location_dest_id.id == move.location_id.id:
-                inventory_data[key] += move.product_qty
+                inventory_data[key] += move.quantity
             else:
-                inventory_data[key] -= move.product_qty
+                inventory_data[key] -= move.quantity
 
         # Crear archivo Excel
         output = io.BytesIO()
