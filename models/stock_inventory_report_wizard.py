@@ -29,30 +29,33 @@ class StockInventoryReportWizard(models.TransientModel):
             ('location_dest_id', 'in', valid_locations.ids)
         ])
 
-        # Procesar datos del inventario
-        report_lines = []
+    # Diccionario para almacenar las cantidades y valores agrupados
+        inventory_data = {}
+
         for move in stock_moves:
-            product = move.product_id
-            location_src = move.location_id
-            location_dest = move.location_dest_id
-            quantity = move.quantity
-            unit_cost = product.standard_price if product else 0.0
-            total_value = quantity * unit_cost
+            product_key = (move.product_id.id, move.location_dest_id.id)  # Agrupar por producto y ubicación destino
+            unit_value = move.product_id.standard_price if move.product_id else 0.0
+            total_value = move.product_qty * unit_value
 
-            # Obtener todos los nombres de lotes asociados al movimiento y concatenarlos
-            lot_names = ', '.join(move.move_line_ids.mapped('lot_id.name')) if move.move_line_ids else 'N/A'
-
-            report_lines.append({
-                'product_id': product.id if product else False,
-                'location_src_id': location_src.id if location_src else False,  # Ubicación de origen
-                'location_dest_id': location_dest.id if location_dest else False,  # Ubicación de destino
-                'lot_name': lot_names,
-                'last_move_date': move.date,
-                'move_type': 'Compra' if move.picking_type_id.code == 'incoming' else 'Transferencia Interna',
-                'quantity': quantity,
-                'unit_value': unit_cost,
-                'total_value': total_value,
-            })
+            # Si el producto ya existe en la ubicación de destino, sumamos la cantidad
+            if product_key not in inventory_data:
+                inventory_data[product_key] = {
+                    'product_name': move.product_id.display_name,
+                    'location_src_name': move.location_id.display_name,
+                    'location_dest_name': move.location_dest_id.display_name,
+                    'last_move_date': move.date,
+                    'lot_name': ', '.join(move.move_line_ids.mapped('lot_id.name')) if move.move_line_ids else 'N/A',
+                    'move_type': 'Compra' if move.picking_type_id.code == 'incoming' else 'Transferencia Interna',
+                    'product_qty': move.product_qty,
+                    'unit_value': unit_value,
+                    'total_value': total_value,
+                }
+            else:
+                inventory_data[product_key]['product_qty'] += move.product_qty
+                inventory_data[product_key]['total_value'] += total_value
+                # Actualizar la última fecha de movimiento si es más reciente
+                if move.date > inventory_data[product_key]['last_move_date']:
+                    inventory_data[product_key]['last_move_date'] = move.date
 
         # Crear registros del reporte
         self.env['stock.inventory.report'].sudo().create(report_lines)
@@ -85,25 +88,39 @@ class StockInventoryReportWizard(models.TransientModel):
             ('location_dest_id', 'in', valid_locations.ids)
         ])
 
-        # Preparar los datos para el reporte
-        inventory_data = []
+    # Diccionario para almacenar las cantidades y valores agrupados
+        inventory_data = {}
+
         for move in stock_moves:
-            lot_names = ', '.join(move.move_line_ids.mapped('lot_id.name')) if move.move_line_ids else 'N/A'
-            move_type = 'Compra' if move.picking_type_id.code == 'incoming' else 'Transferencia Interna'
-            unit_value = move.product_id.standard_price
+            product_key = (move.product_id.id, move.location_dest_id.id)  # Agrupar por producto y ubicación destino
+            unit_value = move.product_id.standard_price if move.product_id else 0.0
             total_value = move.product_qty * unit_value
 
-            inventory_data.append({
-                'product_name': move.product_id.display_name,
-                'location_src_name': move.location_id.display_name,  # Ubicación de origen
-                'location_dest_name': move.location_dest_id.display_name,  # Ubicación de destino
-                'lot_name': lot_names,
-                'last_move_date': move.date,
-                'move_type': move_type,
-                'product_qty': move.product_qty,
-                'unit_value': unit_value,
-                'total_value': total_value,
-            })
+            # Si el producto ya existe en la ubicación de destino, sumamos la cantidad
+            if product_key not in inventory_data:
+                inventory_data[product_key] = {
+                    'product_name': move.product_id.display_name,
+                    'location_src_name': move.location_id.display_name,
+                    'location_dest_name': move.location_dest_id.display_name,
+                    'last_move_date': move.date,
+                    'lot_name': ', '.join(move.move_line_ids.mapped('lot_id.name')) if move.move_line_ids else 'N/A',
+                    'move_type': 'Compra' if move.picking_type_id.code == 'incoming' else 'Transferencia Interna',
+                    'product_qty': move.product_qty,
+                    'unit_value': unit_value,
+                    'total_value': total_value,
+                }
+            else:
+                inventory_data[product_key]['product_qty'] += move.product_qty
+                inventory_data[product_key]['total_value'] += total_value
+                # Actualizar la última fecha de movimiento si es más reciente
+                if move.date > inventory_data[product_key]['last_move_date']:
+                    inventory_data[product_key]['last_move_date'] = move.date
+
+
+
+
+
+            
 
         # Crear archivo Excel
         output = io.BytesIO()
