@@ -1,0 +1,31 @@
+.o_dashboard {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.o_dashboard_item {
+    text-align: center;
+    padding: 10px;
+    border-right: 1px solid #ddd;
+}
+
+.o_dashboard_item:last-child {
+    border-right: none;
+}
+
+.o_dashboard_title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.o_dashboard_value {
+    font-size: 18px;
+    color: #2c3e50;
+}

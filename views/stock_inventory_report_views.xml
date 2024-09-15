@@ -1,0 +1,43 @@
+<odoo>
+    <!-- Vista de Lista -->
+    <record id="view_stock_inventory_report_tree" model="ir.ui.view">
+        <field name="name">stock.inventory.report.tree</field>
+        <field name="model">stock.inventory.report</field>
+        <field name="arch" type="xml">
+            <tree string="Reporte de Inventario a Fecha">
+                <field name="product_id"/>
+                <field name="location_src_id"/> <!-- Cambiado de location_id a location_src_id -->
+                <field name="location_dest_id"/> <!-- Añadido location_dest_id -->
+                <field name="lot_name"/>
+                <field name="last_move_date"/>
+                <field name="move_type"/>
+                <field name="quantity"/>
+                <field name="unit_value"/>
+                <field name="total_value"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de Formulario -->
+    <record id="view_stock_inventory_report_form" model="ir.ui.view">
+        <field name="name">stock.inventory.report.form</field>
+        <field name="model">stock.inventory.report</field>
+        <field name="arch" type="xml">
+            <form string="Reporte de Inventario a Fecha">
+                <sheet>
+                    <group>
+                        <field name="product_id"/>
+                        <field name="location_src_id"/> <!-- Cambiado de location_id a location_src_id -->
+                        <field name="location_dest_id"/> <!-- Añadido location_dest_id -->
+                        <field name="lot_name"/>
+                        <field name="last_move_date"/>
+                        <field name="move_type"/>
+                        <field name="quantity"/>
+                        <field name="unit_value"/>
+                        <field name="total_value"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

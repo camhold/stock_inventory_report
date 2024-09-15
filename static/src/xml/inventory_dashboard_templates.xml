@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="inventory_dashboard_template" name="Inventory Dashboard">
+        <t t-name="inventory.InventoryDashboard">
+            <div class="o_dashboard">
+                <div class="o_dashboard_item">
+                    <div class="o_dashboard_title">Total de Productos</div>
+                    <div class="o_dashboard_value"><t t-esc="state.totalProducts"/></div>
+                </div>
+                <div class="o_dashboard_item">
+                    <div class="o_dashboard_title">Cantidad Total</div>
+                    <div class="o_dashboard_value"><t t-esc="state.totalQuantity"/></div>
+                </div>
+                <div class="o_dashboard_item">
+                    <div class="o_dashboard_title">Valor Total</div>
+                    <div class="o_dashboard_value"><t t-esc="state.totalValue"/></div>
+                </div>
+                <div class="o_dashboard_item">
+                    <div class="o_dashboard_title">Productos Vencidos</div>
+                    <div class="o_dashboard_value"><t t-esc="state.overdueProducts"/></div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
